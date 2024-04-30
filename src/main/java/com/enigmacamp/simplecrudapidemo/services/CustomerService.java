@@ -20,11 +20,11 @@ public class CustomerService {
 
     // Method to Search/Get Customer by ID
     public Customer getCustomerById(Long customerId) {
-        return customerRepository.findById(customerId).orElse(null);
+        return customerRepository.findById(customerId).orElseThrow(() -> new RuntimeException("customer not found"));
     }
 
     // Method to Get/Show All Customer
-    public List<Customer> getAllCustomer() {
+    public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
@@ -41,5 +41,9 @@ public class CustomerService {
         } else {
             return null;
         }
+    }
+
+    public void deleteCustomerById(Long id) {
+        customerRepository.deleteById(id);
     }
 }

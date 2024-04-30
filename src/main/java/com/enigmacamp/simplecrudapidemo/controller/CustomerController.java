@@ -34,13 +34,13 @@ public class CustomerController {
     }
 
     @GetMapping
-    public List<Customer> showAllCustomer() {
-
-        return customerService.getAllCustomer();
+    public ResponseEntity<List<Customer>> showAllCustomer() {
+        List<Customer> res = customerService.getAllCustomers();
+        return ResponseEntity.ok().body(res);
     }
 
     @PutMapping("/customer/{customerId}")
-    public ResponseEntity<Customer> editCUstomer(@PathVariable Long customerId, @RequestBody Customer updatedCustomer) {
+    public ResponseEntity<Customer> editCustomer(@PathVariable Long customerId, @RequestBody Customer updatedCustomer) {
         Customer preUpdate = customerService.getCustomerById(customerId);
 
         if (preUpdate != null) {
@@ -55,5 +55,13 @@ public class CustomerController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteCustomerById(@RequestParam(name = "id") String id) {
+        Long longId = Long.parseLong(id);
+        customerService.deleteCustomerById(longId);
+        String res = "Successfully delete by id";
+        return ResponseEntity.ok().body(res);
     }
 }
